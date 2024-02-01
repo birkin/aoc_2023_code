@@ -7,7 +7,7 @@ python
 ``` zsh
 % time python ./puzzle_01.py
 sum_of_numbers: 56506
-python ./puzzle_01.py ... 67% cpu 0.049 total
+python ./puzzle_01.py ... 64% cpu 0.049 total
 %
 ```
 mojo via terminal
