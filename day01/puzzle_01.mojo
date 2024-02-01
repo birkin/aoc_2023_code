@@ -10,26 +10,38 @@ fn get_first_number( txt: String ) -> Int:
         let ord_char = ord( character )
         # print( 'ord_char: ', ord_char )
         if isdigit( ord_char ):
-            print( 'found a digit' )
+            # print( 'found a digit' )
             # num = int( character )
             try:
                 num = atol( character )
             except Exception:
                 print( 'Error converting string to integer' )
             break
-    print( 'returning num: ', num )
+    # print( 'returning num: ', num )
     return num
 
 
 fn get_second_number( txt: String ) -> Int:
     """ Returns back second integer found in string, by inverting the string and calling get_first_number().
         Called by main()."""
-    print( 'starting get_second_number()' )
-    print( 'starting txt: ', txt )
-    var inverted_txt: String = txt[::-1]  
-    print( 'inverted_txt: ', inverted_txt )
+    # print( 'starting get_second_number()' )
+    # print( 'starting txt: ', txt )
+    let inverted_txt: String = invert_text( txt )  
+    # print( 'inverted_txt: ', inverted_txt )
     let num: Int = get_first_number( inverted_txt )
     return num
+
+
+fn invert_text( txt: String ) -> String:
+    """ Returns back the input string, inverted. 
+        Such a simple thing in python: `inverted_text = txt[::-1]`.
+        Called by get_second_number()."""
+    var inverted_txt: String = ''
+    let txt_length: Int = len( txt )
+    for i in range( txt_length ):
+        let character: String = txt[i]
+        inverted_txt = character + inverted_txt
+    return inverted_txt    
 
 
 fn main():
@@ -51,9 +63,9 @@ fn main():
         let line: String = lines[i]
         let stripped_line: String = line.strip()
         let first_number: Int = get_first_number( stripped_line )
-        print( 'got first_number' )
+        # print( 'got first_number' )
         let second_number: Int = get_second_number( stripped_line )
-        print( 'got second_number' )
+        # print( 'got second_number' )
 
         ## join the two integers into a new number ------------------
         # """ This conversion to a string, and back to an int, is silly. 

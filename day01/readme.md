@@ -1,15 +1,29 @@
 Narrative:
 <https://adventofcode.com/2023/day/1>
 
-_(times below from 3 runs; taking the middle time)_
+_(times below from 3 runs; taking the middle cpu-% and middle-total-time)_
 
+python
 ``` zsh
-birkin@birkinbox-2021 day01 % time python ./puzzle_01.py
+% time python ./puzzle_01.py
 sum_of_numbers: 56506
-python ./puzzle_01.py  0.02s user 0.01s system 65% cpu 0.044 total
+python ./puzzle_01.py ... 67% cpu 0.049 total
+%
+```
+mojo via terminal
+``` zsh
+% time mojo ./puzzle_01.mojo
+sum_of_numbers: 56506
+mojo ./puzzle_01.mojo ... 92% cpu 0.150 total
 %
 ```
 
-puzzle_01.mojo not yet working.
+mojo compiled-binary
+```zsh
+% time ./puzzle_01
+sum_of_numbers: 56506
+./puzzle_01 ... 63% cpu 0.020 total
+% 
+```
 
 ---
