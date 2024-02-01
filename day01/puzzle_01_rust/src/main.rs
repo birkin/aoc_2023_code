@@ -8,7 +8,7 @@ fn main() {
     });
     // let zz: () = contents;  // my (working) hack attempt at python's `type(contents)` to inspect the type
     //-- process lines ----------------------------------------------
-    let numbers: Vec<i8> = Vec::new();
+    let mut numbers: Vec<i8> = Vec::new();
     for line in contents.lines() {
         // println!("{}", line);
         let _foo = "bar";
@@ -24,4 +24,23 @@ fn main() {
     }
     //-- print result -----------------------------------------------
     println!("sum_of_numbers: {}", sum);
+}
+
+fn get_first_number(line: &str) -> i8 {
+    println!("line for get_first_number(), ``{}``", line);
+
+    let mut first_number: i8 = 0;
+    for c in line.chars() {
+        println!("{}", c);
+        if c.is_digit(10) {
+            println!("found digit");
+        }
+    }
+    println!("{}", first_number);
+    return first_number;
+}
+
+fn get_second_number(line: &str) -> i8 {
+    println!("line for get_second_number(), ``{}``", line);
+    return 42;
 }
