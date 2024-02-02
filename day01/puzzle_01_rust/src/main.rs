@@ -8,17 +8,18 @@ fn main() {
     });
     // let zz: () = contents;  // my (working) hack attempt at python's `type(contents)` to inspect the type
     //-- process lines ----------------------------------------------
-    let mut numbers: Vec<i8> = Vec::new();
+    let mut numbers: Vec<i32> = Vec::new();
     for line in contents.lines() {
         // println!("{}", line);
         let _foo = "bar";
-        let first_number: i8 = get_first_number(&line);
-        let second_number: i8 = get_second_number(&line);
-        let new_number: i8 = (first_number * 10) + second_number;
+        let first_number: i32 = get_first_number(&line);
+        let second_number: i32 = get_second_number(&line);
+        let new_number: i32 = (first_number * 10) + second_number;
         numbers.push(new_number);
     }
+    // println!("numbers, ``{:?}``", numbers);
     //-- sum numbers ------------------------------------------------
-    let mut sum: i8 = 0;
+    let mut sum: i32 = 0;
     for number in numbers {
         sum += number;
     }
@@ -26,21 +27,25 @@ fn main() {
     println!("sum_of_numbers: {}", sum);
 }
 
-fn get_first_number(line: &str) -> i8 {
-    println!("line for get_first_number(), ``{}``", line);
-
-    let mut first_number: i8 = 0;
+fn get_first_number(line: &str) -> i32 {
+    // println!("line for get_first_number(), ``{}``", line);
+    let mut first_number: i32 = 0;
     for c in line.chars() {
-        println!("{}", c);
+        // println!("{}", c);
         if c.is_digit(10) {
-            println!("found digit");
+            // println!("found digit");
+            first_number = c.to_digit(10).unwrap() as i32;
+            break;
         }
     }
-    println!("{}", first_number);
+    // println!("first_number, ``{}``", first_number);
     return first_number;
 }
 
-fn get_second_number(line: &str) -> i8 {
-    println!("line for get_second_number(), ``{}``", line);
-    return 42;
+fn get_second_number(line: &str) -> i32 {
+    // println!("line for get_second_number(), ``{}``", line);
+    let inverted_line: String = line.chars().rev().collect();
+    // println!("inverted_line, ``{}``", inverted_line);
+    let second_number: i32 = get_first_number(&inverted_line);
+    return second_number;
 }
