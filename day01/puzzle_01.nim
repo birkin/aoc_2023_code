@@ -6,29 +6,39 @@
 
 import strutils
 import streams
+import strformat
 
-## open file --------------------------------------------------------
+
+proc get_first_number( txt: string ): int =
+    var num: int = 0
+    for character in txt:
+        if character.isDigit():
+            num = int( character )
+            break
+    return num
+
+
+proc readLinesFromFile(filename: string): seq[string] =
+    ## open the file ------------------------------------------------
+    var lines: seq[string] = @[]
+    let file = open(filename, fmRead)
+    defer: file.close()  # ensures file is closed when the proc exits
+    ## process lines ------------------------------------------------
+    for line in file.lines:
+        lines.add(line)
+        var first_number: int = get_first_number( line )
+        echo fmt"first_number, ``{first_number}``"
+    return lines
+
+
+## main code block --------------------------------------------------
 let filename = "./puzzle_01_source.txt"
-let file = open(filename, fmRead)
+let lines = readLinesFromFile(filename)
 
-
-## read lines -------------------------------------------------------
-## https://nim-lang.org/docs/io.html#readFile
-## https://nim-lang.org/docs/strutils.html#splitLines
-
-# let lines = readFile(filename).splitLines
-
-var lines: seq[string] = @[]
-for line in file.lines:
-  lines.add(line)
-
-file.close()  # Don't forget to close the file
-
-
-
-## print lines
+# Print lines
 for line in lines:
-    echo line
+    discard
+    # echo fmt"the line is `{line}`"
 
 
 
