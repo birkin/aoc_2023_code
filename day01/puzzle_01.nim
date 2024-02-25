@@ -5,9 +5,9 @@
 ]# 
 
 import strutils
-import streams
+# import streams
 import strformat
-import sequtils
+# import sequtils
 
 
 proc get_first_number( txt: string ): int =
@@ -40,18 +40,40 @@ proc get_second_number( txt: string ): int =
     return num
 
 
-# proc get_second_number( txt: string ): int =
-#     #[  Reverses the string and calls get_first_number(). 
-#         Called by `readLinesFromFile()`. ]#
-#   var invertedTxt = newSeq[char](txt.len)  # Use `var` to ensure mutability
-#   for i in 0..<txt.len:
-#     invertedTxt[i] = txt[txt.len - i - 1]
-#   let invertedTxtStr = string(invertedTxt)  # Direct conversion to string
-#   let num = get_first_number(invertedTxtStr)  # Assuming get_first_number is defined elsewhere
-#   return num
+# proc readLinesFromFile(filename: string): seq[string] =
+#     ## set up numbers array -----------------------------------------
+#     ## This is the equivalent of `numbers = []` in Python
+#     var numbers: seq[int] = @[]
+#     ## open the file ------------------------------------------------
+#     var lines: seq[string] = @[]
+#     let file = open(filename, fmRead)
+#     defer: file.close()  # ensures file is closed when the proc exits
+#     ## process lines ------------------------------------------------
+#     var index = 0  # Initialize the index
+#     for line in file.lines:
+#         # Use the index as needed, similar to the i in Python's enumerate
+#         let first_number: int = get_first_number(line)
+#         echo fmt"Line {index}, first_number: `{first_number}`"
+        
+#         let second_number: int = get_second_number(line)
+#         echo fmt"Line {index}, second_number: `{second_number}`"
+
+#         let num: int = parseInt( $first_number & $second_number )
+#         echo fmt"Line {index}, num: `{num}`"
+        
+#         numbers.add(num)
+
+#         index += 1  # Manually increment the index
+#         if index > 5:
+#             break
+
+#     return lines
 
 
-proc readLinesFromFile(filename: string): seq[string] =
+proc readLinesFromFile(filename: string): seq[int] =
+    ## set up numbers array -----------------------------------------
+    ## This is the equivalent of `numbers = []` in Python
+    var numbers: seq[int] = @[]
     ## open the file ------------------------------------------------
     var lines: seq[string] = @[]
     let file = open(filename, fmRead)
@@ -60,40 +82,45 @@ proc readLinesFromFile(filename: string): seq[string] =
     var index = 0  # Initialize the index
     for line in file.lines:
         # Use the index as needed, similar to the i in Python's enumerate
-        var first_number: int = get_first_number(line)
+        let first_number: int = get_first_number(line)
         echo fmt"Line {index}, first_number: `{first_number}`"
         
-        var second_number: int = get_second_number(line)
+        let second_number: int = get_second_number(line)
         echo fmt"Line {index}, second_number: `{second_number}`"
 
-        index += 1  # Manually increment the index
-        if index > 5:
-            break
+        let num: int = parseInt( $first_number & $second_number )
+        echo fmt"Line {index}, num: `{num}`"
+        
+        numbers.add(num)
 
-    return lines
+        # index += 1  # Manually increment the index
+        # if index > 5:
+        #     break
 
-# proc readLinesFromFile(filename: string): seq[string] =
-#     ## open the file ------------------------------------------------
-#     var lines: seq[string] = @[]
-#     let file = open(filename, fmRead)
-#     defer: file.close()  # ensures file is closed when the proc exits
-#     ## process lines ------------------------------------------------
-#     for line in file.lines:
-#         # lines.add(line)
-#         var first_number: int = get_first_number( line )
-#         echo fmt"first_number, ``{first_number}``"
-#         var second_number: int = get_second_number( line )
-#         echo fmt"second_number, ``{second_number}``"
-#     return lines
+    return numbers
+
 
 
 ## main code block --------------------------------------------------
 let filename = "./puzzle_01_source.txt"
-let lines = readLinesFromFile(filename)
+let numbers_sequence: seq[int] = readLinesFromFile(filename)
+echo fmt"numbers_sequence: `{numbers_sequence}`"
+echo "typeof( numbers_sequence ), ", typeof( numbers_sequence )  # yields: typeof( numbers_sequence ), seq[int]
+
+import sequtils
+
+## add up all the numbers -------------------------------------------
+## This is the equivalent of `sum_of_numbers = sum(numbers)` in Python
+# let sum_of_numbers: int = numbers_sequence.sum()
+# let sum_of_numbers: int = sequtils.sum(numbers_sequence)
+var sum_of_numbers: int = 0
+for number in numbers_sequence:
+    sum_of_numbers += number
+echo fmt"sum_of_numbers: `{sum_of_numbers}`"
 
 # Print lines
-for line in lines:
-    discard
+# for line in lines:
+#     discard
     # echo fmt"the line is `{line}`"
 
 
