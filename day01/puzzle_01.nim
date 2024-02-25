@@ -1,18 +1,20 @@
 #[ 
     Usage reminder to self...
-    - to just run this file: % nim r ./01_puzzle.nim
-    - to compile: % nim c ./01_puzzle.nim
+    - to just run this file: % nim r ./puzzle_01.nim
+    - to compile to a binary: % nim c ./puzzle_01.nim
 ]# 
 
-import strutils
-# import streams
 import strformat
-# import sequtils
+import strutils
 
+
+## helper functions -------------------------------------------------
 
 proc get_first_number( txt: string ): int =
     #[  Iterates through the characters to get the first number. 
-        Called by readLinesFromFile(). ]#
+        Called by readLinesFromFile(). 
+        Note to self: the odd, seemingly dangling `=` is nim's way of specifing the beginning of a code block, 
+                      like an initial `{` in other languages.  ]#
     # echo fmt"txt, ``{txt}``"
     var num: int = 0
     for character in txt:
@@ -26,7 +28,6 @@ proc get_first_number( txt: string ): int =
             break
     return num
 
-
 proc get_second_number( txt: string ): int =
     #[  Reverses the string and calls get_first_number(). 
         Called by `readLinesFromFile()`. ]#
@@ -39,147 +40,60 @@ proc get_second_number( txt: string ): int =
     let num = get_first_number(invertedTxtStr)  # Assuming get_first_number is defined elsewhere
     return num
 
-
-# proc readLinesFromFile(filename: string): seq[string] =
-#     ## set up numbers array -----------------------------------------
-#     ## This is the equivalent of `numbers = []` in Python
-#     var numbers: seq[int] = @[]
-#     ## open the file ------------------------------------------------
-#     var lines: seq[string] = @[]
-#     let file = open(filename, fmRead)
-#     defer: file.close()  # ensures file is closed when the proc exits
-#     ## process lines ------------------------------------------------
-#     var index = 0  # Initialize the index
-#     for line in file.lines:
-#         # Use the index as needed, similar to the i in Python's enumerate
-#         let first_number: int = get_first_number(line)
-#         echo fmt"Line {index}, first_number: `{first_number}`"
-        
-#         let second_number: int = get_second_number(line)
-#         echo fmt"Line {index}, second_number: `{second_number}`"
-
-#         let num: int = parseInt( $first_number & $second_number )
-#         echo fmt"Line {index}, num: `{num}`"
-        
-#         numbers.add(num)
-
-#         index += 1  # Manually increment the index
-#         if index > 5:
-#             break
-
-#     return lines
-
-
 proc readLinesFromFile(filename: string): seq[int] =
-    ## set up numbers array -----------------------------------------
-    ## This is the equivalent of `numbers = []` in Python
-    var numbers: seq[int] = @[]
-    ## open the file ------------------------------------------------
-    var lines: seq[string] = @[]
+    #[  Reads the file and processes the lines. 
+        Called by the main code block. ]#
+    ## set up numbers array -------------------------------
+    var numbers: seq[int] = @[]  # the equivalent of `numbers = []` in python
+    ## open the file --------------------------------------
     let file = open(filename, fmRead)
     defer: file.close()  # ensures file is closed when the proc exits
-    ## process lines ------------------------------------------------
-    var index = 0  # Initialize the index
+    ## process lines --------------------------------------
     for line in file.lines:
-        # Use the index as needed, similar to the i in Python's enumerate
+        ## get the numbers --------------------------------
         let first_number: int = get_first_number(line)
         # echo fmt"Line {index}, first_number: `{first_number}`"
-        
         let second_number: int = get_second_number(line)
         # echo fmt"Line {index}, second_number: `{second_number}`"
-
-        let num: int = parseInt( $first_number & $second_number )
+        # let num: int = parseInt( $first_number & $second_number )
+        let num: int = (first_number * 10) + second_number
         # echo fmt"Line {index}, num: `{num}`"
-        
+        ## add num to holder array ------------------------
         numbers.add(num)
-
-        # index += 1  # Manually increment the index
-        # if index > 5:
-        #     break
-
     return numbers
 
+## end helper functions ---------------------------------------------
 
 
 ## main code block --------------------------------------------------
+
+## open and get sequence of numbers -----------------------
 let filename = "./puzzle_01_source.txt"
 let numbers_sequence: seq[int] = readLinesFromFile(filename)
 # echo fmt"numbers_sequence: `{numbers_sequence}`"
 # echo "typeof( numbers_sequence ), ", typeof( numbers_sequence )  # yields: typeof( numbers_sequence ), seq[int]
-
-import sequtils
-
-## add up all the numbers -------------------------------------------
-## This is the equivalent of `sum_of_numbers = sum(numbers)` in Python
-# let sum_of_numbers: int = numbers_sequence.sum()
-# let sum_of_numbers: int = sequtils.sum(numbers_sequence)
+## add up all the numbers ---------------------------------
+# let sum_of_numbers: int = numbers_sequence.sum()  # didn't work
+# let sum_of_numbers: int = sequtils.sum(numbers_sequence) didn't work
 var sum_of_numbers: int = 0
 for number in numbers_sequence:
     sum_of_numbers += number
+## final output -------------------------------------------
 echo fmt"sum_of_numbers: `{sum_of_numbers}`"
 
-# Print lines
-# for line in lines:
-#     discard
-    # echo fmt"the line is `{line}`"
+## end main code block ----------------------------------------------
 
 
+## experimentation --------------------------------------------------
 
+# import sequtils
 
-# def work():
-#     """ Manager; called by dunder-main. """
-#     lines = []
+# ## create a sequence of numbers
+# let some_nums = @[1, 2, 3, 4, 5]
 
-#     with open( './puzzle_01_source.txt' ) as f:
-#         lines = f.readlines()
+# ## use foldl from sequtils to sum the elements
+# let sum = some_nums.foldl(a + b, 0)
 
-#     numbers = []
-#     for line in lines:
-#         first_number = get_first_number( line )
-#         second_number = get_second_number( line )
-#         num = int( f'{first_number}{second_number}' )
-#         numbers.append( num )
-#     # print( f'numbers: {numbers}' )
+# echo "Sum of elements: ", sum
 
-#     sum_of_numbers = sum( numbers )
-#     print( f'sum_of_numbers: {sum_of_numbers}' )
-#     return
-
-
-# def get_first_number( txt: str ) -> int:
-#     num: int = 0
-#     for character in txt:
-#         if character.isdigit():
-#             num = int( character )
-#             break
-#     return num
-
-
-# def get_second_number( txt: str ) -> int:
-#     """
-#     Wow -- didn't know about this slicing approach. From research...
-#     "The general form of slicing is [start:stop:step]."
-#     So...
-#     >>>
-#     >>> s = 'abcdefg'
-#     >>> 
-#     >>> s[::]
-#     'abcdefg'
-#     >>> 
-#     >>> s[::2]
-#     'aceg'
-#     >>> 
-#     >>> s[::3]
-#     'adg'
-#     >>> 
-#     >>> s[::-1]
-#     'gfedcba'
-#     >>>     
-#     """
-#     inverted_txt = txt[::-1]  
-#     num: int = get_first_number( inverted_txt )
-#     return num
-
-
-# if __name__ == '__main__':  # just to organize code
-#     work()
+## end experimentation ----------------------------------------------
